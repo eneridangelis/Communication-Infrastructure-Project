@@ -14,9 +14,9 @@ print(listinha)
 clientSocket.send('Received List')
 
 file_name = input('Type file name:')
-clientSocket.send('catto.jpeg')
+clientSocket.send(file_name)
 
-with open('Downloads/rfile.jpeg','wb') as f:
+with open('Downloads/' + file_name,'wb') as f:
 	while 1:
 		print('Receiving Data...')
 		data = clientSocket.recv(1024)
