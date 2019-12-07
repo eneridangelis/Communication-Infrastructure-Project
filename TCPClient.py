@@ -13,7 +13,7 @@ print(listinha)
 
 clientSocket.send('Received List')
 
-file_name = input('Type file name:')
+file_name = raw_input('Type file name:')
 clientSocket.send(file_name)
 
 with open('Downloads/' + file_name,'wb') as f:
