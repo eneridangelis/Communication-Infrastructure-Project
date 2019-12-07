@@ -12,15 +12,21 @@ while True:
     sentence = connectionSocket.recv(1024)
     print('Server recieved' + sentence)
     
-    dir_list = os.listdir()
-    connectionSocket.send(dir_list)
+    dir_list = os.listdir('Arquivos')
+    print(dir_list)
+    files = ''
+    for i in dir_list:
+        files += './' + i + '\n'
+    connectionSocket.send(files)
+    
+    list_response = connectionSocket.recv(1024)
+    print(list_response)
 
-    filename = 'doggo.jpg'
-    f = open(filename, 'rb')
+    filename = connectionSocket.recv(1024)
+    f = open('Arquivos/' + filename, 'rb')
     l = f.read(1024)
     while (l):
         connectionSocket.send(l)
-        print('Sent ' + l)
         l = f.read(1024)
     f.close()
 
