@@ -3,8 +3,9 @@ from socket import *
 serverPort = 12000
 serverSocket = socket(AF_INET, SOCK_DGRAM)
 serverSocket.bind(('', serverPort))
-print("The serverv is ready to recieve")
+print("The server is ready to recieve")
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
+    print(message)
     modifiedMessage = message.decode().upper()
     serverSocket.sendto(modifiedMessage.encode(), clientAddress)
