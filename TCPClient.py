@@ -15,7 +15,7 @@ clientSocket.send('Received List')
 
 clientSocket.send('catto.jpeg')
 
-with open('rfile.jpeg','wb') as f:
+with open('Downloads/rfile.jpeg','wb') as f:
 	while 1:
 		print('Receiving Data...')
 		data = clientSocket.recv(1024)
