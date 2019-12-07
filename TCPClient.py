@@ -8,6 +8,9 @@ clientSocket.connect((serverName, serverPort))
 sentence = 'Hello Server'
 clientSocket.send(sentence)
 
+listinha = clientSocket.recv(1024)
+print(listinha) 
+
 with open('rfile.jpg','wb') as f:
 	while 1:
 		print('Receiving Data...')

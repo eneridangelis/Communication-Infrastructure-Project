@@ -1,4 +1,6 @@
 from socket import *
+import os
+
 serverPort = 12000
 serverSocket = socket(AF_INET, SOCK_STREAM)
 serverSocket.bind(('', serverPort))
@@ -10,6 +12,9 @@ while True:
     sentence = connectionSocket.recv(1024)
     print('Server recieved' + sentence)
     
+    dir_list = os.listdir()
+    connectionSocket.send(dir_list)
+
     filename = 'doggo.jpg'
     f = open(filename, 'rb')
     l = f.read(1024)
