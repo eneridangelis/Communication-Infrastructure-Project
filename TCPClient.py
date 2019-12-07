@@ -13,6 +13,7 @@ print(listinha)
 
 clientSocket.send('Received List')
 
+file_name = input('Type file name:')
 clientSocket.send('catto.jpeg')
 
 with open('Downloads/rfile.jpeg','wb') as f:
