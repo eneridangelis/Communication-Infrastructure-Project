@@ -11,7 +11,11 @@ clientSocket.send(sentence)
 listinha = clientSocket.recv(1024)
 print(listinha) 
 
-with open('rfile.jpg','wb') as f:
+clientSocket.send('Received List')
+
+clientSocket.send('catto.jpeg')
+
+with open('Downloads/rfile.jpeg','wb') as f:
 	while 1:
 		print('Receiving Data...')
 		data = clientSocket.recv(1024)
