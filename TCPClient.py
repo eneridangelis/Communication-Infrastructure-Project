@@ -1,29 +1,63 @@
 from socket import *
 
 #172.22.70.249
-serverName = '172.22.68.47'
+
+serverName = ''
 serverPort = 12000
 clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect((serverName, serverPort))
-sentence = 'Hello Server'
-clientSocket.send(sentence)
 
-listinha = clientSocket.recv(1024)
-print(listinha) 
+def get_list():
+	listinha = clientSocket.recv(1024)
+	print(listinha)
+	clientSocket.send('Received List')
 
-clientSocket.send('Received List')
+# def get_file(message):	
 
-clientSocket.send('catto.jpeg')
+def close_connection():
+	clientSocket.close()
 
-with open('Downloads/rfile.jpeg','wb') as f:
+
+def main():
+	sentence = 'Hello Server'
+	clientSocket.send(sentence)
+	print('From server: ' + clientSocket.recv(1024))
+
 	while 1:
-		print('Receiving Data...')
-		data = clientSocket.recv(1024)
-		if not data:
-			break
-		f.write(data)
-		
+	
+		op = input('1. Receber lista de arquivos\n2. Requisitar arquivo\n3. Encerrar conexao\nDigite a operacao desejada:')
 
-f.close()
-print('File Received')
-clientSocket.close()
+		if op == 1:
+			clientSocket.send(repr(op))
+			get_list()
+		elif op == 2:
+			clientSocket.send(repr(op))
+			message = clientSocket.recv(1024)
+			file_name = raw_input(message)
+			clientSocket.send(file_name)
+			filesize = int(clientSocket.recv(1024))
+			print(filesize)
+			clientSocket.send('Size recieved. Client ready.')
+			f = open('Downloads/' + file_name,'wb')
+			bytes_recieved = 0
+			while bytes_recieved < filesize:
+				print('Receiving Data...')
+				data = clientSocket.recv(min(filesize - bytes_recieved, 1024))
+				# print(data)
+				print(bytes_recieved)
+				if not data:
+					break
+				f.write(data)
+				bytes_recieved += len(data)
+			f.close()
+			print('File Received')
+		elif op == 3:
+			clientSocket.send(repr(op))
+			close_connection()
+			break;
+		else:
+			print('Digite uma opcao valida.')
+	
+
+if __name__ == "__main__":
+	main()
