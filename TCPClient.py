@@ -18,11 +18,18 @@ def close_connection():
 	clientSocket.close()
 
 
+<<<<<<< HEAD
 def main():
 	sentence = 'Hello Server'
 	clientSocket.send(sentence)
 	print('From server: ' + clientSocket.recv(1024))
 
+=======
+file_name = raw_input('Type file name:')
+clientSocket.send(file_name)
+
+with open('Downloads/' + file_name,'wb') as f:
+>>>>>>> fa65935fc246f2963cdafda02e20c8c5cb16f883
 	while 1:
 	
 		op = input('1. Receber lista de arquivos\n2. Requisitar arquivo\n3. Encerrar conexao\nDigite a operacao desejada:')
