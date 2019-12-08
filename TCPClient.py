@@ -3,9 +3,22 @@ from socket import *
 #172.22.70.249
 
 serverName = ''
+serverHost = ''
 serverPort = 12000
+
+dnsHost = '127.0.0.1'
+dnsPort = 15000
+
+dnsSocket = socket(AF_INET, SOCK_DGRAM)
+serverName = raw_input('Insira o nome do servidor que vc quer se conectar: ')
+dnsSocket.sendto(serverName, (dnsHost, dnsPort))
+query = dnsSocket.recvfrom(1024)[0]
+print(query)
+serverHost = query.split()[1]
+dnsSocket.close()
+
 clientSocket = socket(AF_INET, SOCK_STREAM)
-clientSocket.connect((serverName, serverPort))
+clientSocket.connect((serverHost, serverPort))
 
 def get_list():
 	listinha = clientSocket.recv(1024)
