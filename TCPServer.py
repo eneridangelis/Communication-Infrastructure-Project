@@ -1,18 +1,11 @@
 from socket import *
 import os
-
-
-dnsAddress = ("0.0.0.0", 1080)
-serverName = "localhost"
-
+z
 serverPort = 12000
 serverSocket = socket(AF_INET, SOCK_STREAM)
-serverSocket.bind((serverName, serverPort))
-
+serverSocket.bind(('', serverPort))
 serverSocket.listen(1)
-
 print('The server is ready to recieve')
-
 while True:
     connectionSocket, addr = serverSocket.accept()
     print('Got connection from' + repr(addr))
