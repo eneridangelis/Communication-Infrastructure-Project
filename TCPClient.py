@@ -2,10 +2,18 @@ from socket import *
 
 #172.22.70.249
 
-serverName = ''
-serverPort = 12000
+# serverName = ''
+# serverPort = 12000
+
+dnsAddress = ("0.0.0.0", 1080)
+
 clientSocket = socket(AF_INET, SOCK_STREAM)
-clientSocket.connect((serverName, serverPort))
+
+serverName = input("Insert server domain: ")
+serverAddress = ('localhost', 12000)
+SYN = "SYN"
+
+clientSocket.connect((serverAddress))
 
 def get_list():
 	listinha = clientSocket.recv(1024)
