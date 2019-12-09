@@ -1,5 +1,6 @@
 from socket import *
 import pickle 
+import os
 
 sendSeq = 0
 sendACK = 0
@@ -35,7 +36,7 @@ def rdtRecv(serverSocket):
         try: 
             recvData = serverSocket.recvfrom(1024)
         except:
-            print('temporizador estourou')
+            print('still waiting')
         else:
             recvSeq, recvACK, recvMessage = pickle.loads(recvData[0])
             if recvSeq == expectedACK:
@@ -73,11 +74,38 @@ dnsSocket.close()
 
 
 serverSocket = socket(AF_INET, SOCK_DGRAM)
+serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 serverSocket.settimeout(2.0)
 serverSocket.bind((serverHost, serverPort))
 print("The server is ready to recieve")
-message, clientAddress = rdtRecv(serverSocket)
-print(message)
-message, clientAddress = rdtRecv(serverSocket)
-print(message)
-    
+
+while True:
+    message, clientAddress = rdtRecv(serverSocket)
+    print('Got connection from ' + repr(clientAddress))
+    print('Server recieved ' + message)
+    rdtSend(serverSocket, clientAddress, 'Ready for requests')
+    while True:
+        op = rdtRecv(serverSocket)[0]
+        if op == '1':
+            dir_list = os.listdir('Arquivos')
+            print(dir_list)
+            files = ''
+            for i in dir_list:
+                files += './' + i + '\n'
+            rdtSend(serverSocket, clientAddress, files)
+            list_response = rdtRecv(serverSocket)[0]
+            print(list_response)
+        elif op == '2':
+            rdtSend(serverSocket, clientAddress, 'Type file name: ')
+            filename = rdtRecv(serverSocket)[0]
+            f = open('Arquivos/' + filename, 'rb')
+            l = f.read(1024)
+            while(l):
+                rdtSend(serverSocket, clientAddress, l)
+                l = f.read(1024)
+            f.close()
+            rdtSend(serverSocket, clientAddress, "")
+            print('Done Sending')
+        elif op == '3':
+            serverSocket.close()
+            break

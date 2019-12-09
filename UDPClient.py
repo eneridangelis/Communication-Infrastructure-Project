@@ -74,4 +74,38 @@ dnsSocket.close()
 clientSocket = socket(AF_INET, SOCK_DGRAM)
 message = 'Hello Server!'
 rdtSend(clientSocket, (serverHost, serverPort), message)
-rdtSend(clientSocket, (serverHost, serverPort), message)
+message = rdtRecv(clientSocket)[0]
+print('From server: ' + message)
+
+while True:
+    op = input('1. Receber lista de arquivos\n2. Requisitar arquivo\n3. Encerrar conexao\nDigite a operacao desejada:')
+    if op == 1:
+        rdtSend(clientSocket, (serverHost, serverPort), repr(op))
+        listinha = rdtRecv(clientSocket)[0]
+        print(listinha)
+        rdtSend(clientSocket, (serverHost, serverPort), 'Recieved List')
+    elif op == 2:
+        #le 2048 bytes, joga numa string
+        #se a string for vazia, acabei de ler o arquivo
+        #manda string vazia
+
+        #ler enquanto o q leu n for uma string vazia
+
+
+        rdtSend(clientSocket, (serverHost, serverPort), repr(op))
+        message = rdtRecv(clientSocket)[0]
+        filename = raw_input(message)
+        rdtSend(clientSocket, (serverHost, serverPort), filename)
+        f = open('Downloads/' + filename,'wb')
+        while 1:
+            print('Receiving Data...')
+            data = rdtRecv(clientSocket)[0]
+            if data == "":
+                break
+            f.write(data)
+        f.close()
+        print('File Received')
+    elif op == 3:
+        rdtSend(clientSocket, (serverHost, serverPort), repr(op))
+        clientSocket.close()
+        break

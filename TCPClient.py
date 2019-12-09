@@ -67,7 +67,7 @@ def main():
 		elif op == 3:
 			clientSocket.send(repr(op))
 			close_connection()
-			break;
+			break
 		else:
 			print('Digite uma opcao valida.')
 	

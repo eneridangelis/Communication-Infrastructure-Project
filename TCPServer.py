@@ -54,3 +54,4 @@ while True:
             print('Done Sending')     
         else:
             connectionSocket.close()
+            break
